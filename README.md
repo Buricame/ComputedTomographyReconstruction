@@ -1,25 +1,28 @@
-Computed Tomography Reconstruction
+CT Image Reconstruction
 
-This project involves creating projection data (sinograms) from computed tomography (CT) images and reconstructing images from these data using various filtering methods. The main steps and functions used in the project are as follows:
 
-Image Data:
-A sample CT image is generated using the Shepp-Logan phantom.
-A user-provided brain image is included in the project.
+Overview
 
-Projection Angles:
-Projection angles are determined, evenly spaced between 0 and 180 degrees.
+This project is a learning initiative focused on reconstructing CT images from raw data using Fourier transform-based algorithms and Filtered Back Projection (FBP).
 
-Sinogram Calculation:
-Sinograms are created by rotating the images at specified angles and summing the projections.
 
-Filter Functions:
-Sinogram projections are filtered using Ramp, Shepp-Logan, Cosine, and Hamming filters.
+Steps
 
-Filter Application and Image Reconstruction:
-Sinograms are filtered using each filter, and images are reconstructed from these filtered sinograms.
-A combined filter using all the filters is also applied to filter the sinograms and reconstruct the images.
+Image Data: Uses Shepp-Logan phantom and user-provided brain CT images.
 
-Visualization:
-Original sinograms, filtered sinograms, and reconstructed images are visualized using matplotlib.
+Projection Angles: Evenly spaced angles from 0 to 180 degrees.
 
-This project is designed to aid in understanding the fundamental techniques used in computed tomography image processing.
+Sinogram Calculation: Creates sinograms by rotating images and summing projections.
+
+Filtering Methods: Applies Ramp, Shepp-Logan, Cosine, and Hamming filters.
+
+Reconstruction: Reconstructs images from filtered sinograms using FBP.
+
+Visualization: Displays original and reconstructed images using matplotlib.
+
+
+Software
+
+Google Colab: Cloud-based coding platform.
+
+Python Libraries: NumPy, SciPy, Matplotlib, scikit-image, OpenCV, Seaborn, Plotly.
