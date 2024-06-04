@@ -1,10 +1,10 @@
-<u>CT Image Reconstruction</u>
+<u><b>CT Image Reconstruction</b></u>
 
-<u>Overview</u>
+<u><b>Overview</b></u>
 
 This project is a learning initiative focused on reconstructing CT images from raw data using Fourier transform-based algorithms and Filtered Back Projection (FBP).
 
-<u>Steps</u>
+<u><b>Steps</b></u>
 
 - **Image Data:** Uses Shepp-Logan phantom and user-provided brain CT images.
 - **Projection Angles:** Evenly spaced angles from 0 to 180 degrees.
@@ -13,7 +13,7 @@ This project is a learning initiative focused on reconstructing CT images from r
 - **Reconstruction:** Reconstructs images from filtered sinograms using FBP.
 - **Visualization:** Displays original and reconstructed images using matplotlib.
 
-<u>Software</u>
+<u><b>Software</b></u>
 
 - **Google Colab:** Cloud-based coding platform.
 - **Python Libraries:** NumPy, SciPy, Matplotlib, scikit-image, OpenCV, Seaborn, Plotly.
