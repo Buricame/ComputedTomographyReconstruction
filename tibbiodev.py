@@ -134,7 +134,6 @@ def apply_combined_filter(sinogram, theta):
 
 filtered_sinogram_combined, reconstruction_combined = apply_combined_filter(sinogram, theta)
 user_filtered_sinogram_combined, user_reconstruction_combined = apply_combined_filter(user_sinogram, theta)
-print(filtered_sinogram_combined)
 # Sinogramları ve rekonstrükte edilen görüntüleri yan yana göster
 plt.figure(figsize=(20, 15))
 
@@ -198,111 +197,6 @@ plt.title("Kombine Filtre ile Rekonstrüksiyon")
 plt.subplot(2, len(filters) + 2, 2 * (len(filters) + 2))
 plt.imshow(user_reconstruction_combined, cmap='gray')
 plt.title("Kullanıcı Kombine Rekonstrüksiyon")
-
-plt.tight_layout()
-plt.show()
-
-import numpy as np
-import matplotlib.pyplot as plt
-from scipy.ndimage import rotate
-from skimage.data import shepp_logan_phantom
-from skimage import io
-from scipy.fft import fft, ifft, fftfreq
-
-# Shepp-Logan Phantom oluştur
-shepp_logan = shepp_logan_phantom()
-
-# Kullanıcı tarafından sağlanan resmi yükle
-user_image = io.imread('/content/CT Resimler/Beyin1.jpg', as_gray=True)  # Kendi görüntü dosyanızın yolunu ekleyin
-
-# Shepp-Logan filtresi uygulayarak CT rekonstrüksiyonunu gerçekleştirme fonksiyonu
-def ct_reconstruction(image, theta, beta_values):
-    sinograms = {}
-    reconstructions = {}
-
-    for beta in beta_values:
-        sinogram = calculate_sinogram(image, theta)
-        sinograms[f"Shepp-Logan (beta={beta})"] = sinogram
-
-        filtered_sinogram = filter_sinogram(sinogram, beta)
-        reconstruction = back_project(filtered_sinogram, theta)
-        reconstructions[f"Shepp-Logan (beta={beta})"] = reconstruction
-
-    return sinograms, reconstructions
-
-# Shepp-Logan filtresiyle sinogram oluşturma fonksiyonu
-def calculate_sinogram(image, theta):
-    sinogram = np.zeros((len(theta), image.shape[0]))
-    for i, angle in enumerate(theta):
-        rotated_image = rotate(image, angle, reshape=False)
-        sinogram[i] = np.sum(rotated_image, axis=0)
-    return sinogram
-
-# Shepp-Logan filtresi
-def shepp_logan_filter(projection, beta):
-    N = len(projection)
-    freqs = fftfreq(N)
-    filter_shepp = np.abs(freqs) * np.sinc(beta * freqs / (2 * np.pi))
-    projection_fft = fft(projection)
-    filtered_projection = projection_fft * filter_shepp
-    return np.real(ifft(filtered_projection))
-
-# Shepp-Logan filtresiyle sinogramı filtreleme
-def filter_sinogram(sinogram, beta):
-    filtered_sinogram = np.zeros_like(sinogram)
-    for i in range(sinogram.shape[0]):
-        filtered_sinogram[i] = shepp_logan_filter(sinogram[i], beta)
-    return filtered_sinogram
-
-# Geri projeksiyon fonksiyonu
-def back_project(sinogram, theta):
-    reconstruction = np.zeros((sinogram.shape[1], sinogram.shape[1]))
-    for i, angle in enumerate(theta):
-        projection = sinogram[i]
-        rotated_projection = np.tile(projection, (reconstruction.shape[0], 1))
-        rotated_projection = rotate(rotated_projection, -angle, reshape=False)
-        reconstruction += rotated_projection
-    return reconstruction / len(theta)
-
-# Parametre değerlerini belirleme
-beta_values = [0.1, 0.5, 1.0, 2.0]  # Shepp-Logan filtresi için beta değerleri
-
-# Projeksiyon açılarını belirle
-theta = np.linspace(0., 180., 180, endpoint=False)
-
-# CT rekonstrüksiyonunu gerçekleştirme
-shepp_logan_sinograms, shepp_logan_reconstructions = ct_reconstruction(shepp_logan, theta, beta_values)
-user_image_sinograms, user_image_reconstructions = ct_reconstruction(user_image, theta, beta_values)
-
-# Sinogramların ve rekonstrüksiyonların görselleştirilmesi
-plt.figure(figsize=(15, 10))
-
-# Shepp-Logan Phantom için
-for i, (param_name, sinogram) in enumerate(shepp_logan_sinograms.items(), start=1):
-    plt.subplot(2, len(beta_values), i)
-    plt.imshow(sinogram.T, cmap='gray', aspect='auto')
-    plt.title(f"{param_name} Sinogram")
-
-for i, (param_name, reconstruction) in enumerate(shepp_logan_reconstructions.items(), start=1):
-    plt.subplot(2, len(beta_values), i + len(beta_values))
-    plt.imshow(reconstruction, cmap='gray')
-    plt.title(f"{param_name} Reconstruction")
-
-plt.tight_layout()
-plt.show()
-
-# Kullanıcı tarafından sağlanan görüntü için
-plt.figure(figsize=(15, 10))
-
-for i, (param_name, sinogram) in enumerate(user_image_sinograms.items(), start=1):
-    plt.subplot(2, len(beta_values), i)
-    plt.imshow(sinogram.T, cmap='gray', aspect='auto')
-    plt.title(f"{param_name} Sinogram")
-
-for i, (param_name, reconstruction) in enumerate(user_image_reconstructions.items(), start=1):
-    plt.subplot(2, len(beta_values), i + len(beta_values))
-    plt.imshow(reconstruction, cmap='gray')
-    plt.title(f"{param_name} Reconstruction")
 
 plt.tight_layout()
 plt.show()
