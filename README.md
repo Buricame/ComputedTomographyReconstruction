@@ -1,6 +1,5 @@
 CT Image Reconstruction
 
-
 Overview
 
 This project is a learning initiative focused on reconstructing CT images from raw data using Fourier transform-based algorithms and Filtered Back Projection (FBP).
