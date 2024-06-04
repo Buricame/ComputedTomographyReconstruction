@@ -1,4 +1,5 @@
 Computed Tomography Reconstruction
+
 This project involves creating projection data (sinograms) from computed tomography (CT) images and reconstructing images from these data using various filtering methods. The main steps and functions used in the project are as follows:
 
 Image Data:
